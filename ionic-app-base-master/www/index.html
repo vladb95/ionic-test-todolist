@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="lib/ionic/css/ionic.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then remove the CSS include above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <script src="lib/ionic/js/ionic.bundle.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <!--<script src="cordova.js"></script>-->
+
+    <!-- your app's js -->
+    <script src="js/app.js"></script>
+
+  </head>
+
+  <body ng-app="ToDo" ng-controller="toDoController">
+    <ion-pane>
+      <ion-header-bar class="bar-positive">
+        <h1 class="title">ToDo List</h1>
+        <button class="button icon ion-plus" ng-click="addNewTask()"></button>
+      </ion-header-bar>
+      <ion-content class="has-header">
+        <ion-list>
+          <ion-item ng-repeat="task in tasks" class="item item-checkbox item-icon-right" ng-class="{'checked':task.done}">
+            <label class="checkbox">
+              <input type="checkbox" ng-model="task.done">
+            </label>
+            <span class="title" ng-click="openTask($index)" ng-bind="task.title"></span>
+            <i class="icon ion-close-circled deleteItem" ng-click="deleteTask($index)"></i>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ion-pane>
+    <script id="js/task.html" type="text/ng-template">
+      <div class="modal">
+       <ion-header-bar class="bar-secondary">
+       <h1 class="title" ng-show="currentTaskId<0">New Task</h1>
+       <h1 class="title" ng-show="currentTaskId>=0">Edit Task</h1>
+       <button class="button button-clear button-positive" ng-click="closeTask()">Cancel</button>
+     </ion-header-bar>
+     <ion-content class="has-header">
+       <form>
+         <div class="list">
+           <label class="item item-input">
+             <input type="text" placeholder="Title" ng-model="activeTask.title">
+           </label>
+           <label class="item item-input">
+             <textarea placeholder="Description" ng-model="activeTask.description"></textarea>
+           </label>
+           <ul class="list" ng-show="currentTaskId>=0">
+             <li class="item item-toggle">
+               <span class="toggle-item">Done</span>
+               <label class="toggle toggle-positive">
+                 <input type="checkbox" ng-model="activeTask.done">
+                 <div class="track">
+                   <div class="handle"></div>
+                 </div>
+               </label>
+              </li>
+           </ul>
+           <div class="padding">
+             <button class="button button-block button-positive" ng-show="currentTaskId<0" ng-click="submitTask(activeTask)">Add</button>
+             <button class="button button-block button-positive" ng-show="currentTaskId>=0" ng-click="submitTask(activeTask)">Save</button>
+           </div>
+         </div>
+       </form>
+     </ion-content>
+     </div>
+   </script>
+  </body>
+</html>
